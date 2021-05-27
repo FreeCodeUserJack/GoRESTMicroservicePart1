@@ -1,7 +1,6 @@
 package services
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/domain"
@@ -24,7 +23,7 @@ func (u *UserServiceImpl) GetUserById(id uint64) (*domain.User, error) {
 	}.GetUserById(id)
 
 	if err != nil {
-		return nil, errors.New("user with id: " + fmt.Sprintf("%v", id) + " not found")
+		return nil, err
 	}
 
 	return user, nil

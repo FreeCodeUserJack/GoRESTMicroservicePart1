@@ -34,7 +34,7 @@ func (u *UserControllerImpl) GetUser(w http.ResponseWriter, r *http.Request) {
 
 	userService := services.UserServiceImpl{}
 
-	testUser, err := userService.GetUserById(uint64(val))
+	foundUser, err := userService.GetUserById(uint64(val))
 
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
@@ -42,10 +42,10 @@ func (u *UserControllerImpl) GetUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = json.NewEncoder(w).Encode(testUser)
+	err = json.NewEncoder(w).Encode(foundUser)
 
 	if err != nil {
-		log.Fatalf("error encoding %v", testUser)
+		log.Fatalf("error encoding %v", foundUser)
 	}
 	
 	w.WriteHeader(http.StatusOK)
