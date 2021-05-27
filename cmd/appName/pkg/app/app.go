@@ -1,6 +1,8 @@
 package app
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func StartApp() {
 	fmt.Println("starting app")
