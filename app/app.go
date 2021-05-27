@@ -9,4 +9,5 @@ import (
 func StartApp() {
 	fmt.Println("started app")
 	controllers.UserController()
+	fmt.Println("finished app")
 }
