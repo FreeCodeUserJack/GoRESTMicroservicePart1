@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	app "github.com/FreeCodeUserJack/GoRESTMicroservicePart1/MVC/app"
+	app "github.com/FreeCodeUserJack/GoRESTMicroservicePart1/app"
 )
 
 func main() {
