@@ -9,7 +9,7 @@ import (
 )
 
 type UserService interface {
-	GetUserById(id uint64) (*domain.User, error)
+	GetUserById(id uint64) (*domain.User, *utils.ApplicationError)
 }
 
 type UserServiceImpl struct {

@@ -8,18 +8,25 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/repository"
 	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/services"
 	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/utils"
 )
 
 type UserController interface {
-	GetUser(w http.ResponseWriter, r *http.Request)
+	GetUserById(w http.ResponseWriter, r *http.Request)
 }
 
-type UserControllerImpl struct {}
+type UserControllerImpl struct {
+	UserService services.UserService
+}
 
-func (u *UserControllerImpl) GetUser(w http.ResponseWriter, r *http.Request) {
+func NewUserControllerImpl(userService services.UserService) UserControllerImpl {
+	return UserControllerImpl{
+		UserService: userService,
+	}
+}
+
+func (u UserControllerImpl) GetUserById(w http.ResponseWriter, r *http.Request) {
 	encoder := json.NewEncoder(w)
 
 	userId := strings.TrimPrefix(r.URL.Path, "/users/")
@@ -39,17 +46,7 @@ func (u *UserControllerImpl) GetUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userRepo := repository.UserRepositoryInMemoryImpl{
-		DatabaseUrl: "url",
-		Username: "user",
-		Password: "pass",
-	}
-
-	userService := services.UserServiceImpl{
-		UserRepository: userRepo,
-	}
-
-	foundUser, userServiceErr := userService.GetUserById(uint64(val))
+	foundUser, userServiceErr := u.UserService.GetUserById(uint64(val))
 
 	if userServiceErr != nil {
 		w.WriteHeader(userServiceErr.StatusCode)
