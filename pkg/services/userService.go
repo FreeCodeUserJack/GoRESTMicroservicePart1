@@ -5,6 +5,7 @@ import (
 
 	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/domain"
 	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/repository"
+	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/utils"
 )
 
 type UserService interface {
@@ -13,7 +14,7 @@ type UserService interface {
 
 type UserServiceImpl struct {}
 
-func (u *UserServiceImpl) GetUserById(id uint64) (*domain.User, error) {
+func (u UserServiceImpl) GetUserById(id uint64) (*domain.User, *utils.ApplicationError) {
 	fmt.Println("user service")
 
 	user, err := repository.UserRepositoryImpl{

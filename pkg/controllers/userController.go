@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/services"
+	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/utils"
 )
 
 type UserController interface {
@@ -27,22 +28,28 @@ func (u *UserControllerImpl) GetUser(w http.ResponseWriter, r *http.Request) {
 	val, err := strconv.Atoi(userId)
 
 	if err != nil {
+		convErr := &utils.ApplicationError{
+			Message: fmt.Sprintf("failed to convert userid (%s) to an uint64", userId),
+			StatusCode: http.StatusBadRequest,
+			Code: "bad request",
+		}
 		w.WriteHeader(http.StatusBadRequest)
-		encoder.Encode(err.Error())
+		encoder.Encode(convErr.String())
 		return
 	}
 
 	userService := services.UserServiceImpl{}
 
-	foundUser, err := userService.GetUserById(uint64(val))
+	foundUser, userServiceErr := userService.GetUserById(uint64(val))
 
-	if err != nil {
-		w.WriteHeader(http.StatusNotFound)
-		encoder.Encode(err.Error())
+	if userServiceErr != nil {
+		w.WriteHeader(userServiceErr.StatusCode)
+		
+		w.Write([]byte(err.Error()))
 		return
 	}
 
-	err = json.NewEncoder(w).Encode(foundUser)
+	err = encoder.Encode(foundUser)
 
 	if err != nil {
 		log.Fatalf("error encoding %v", foundUser)
