@@ -10,7 +10,7 @@ import (
 
 func StartApp() {
 	fmt.Println("starting app")
-	controllers.UserControllerHi()
+	// controllers.UserControllerHi()
 
 	userController := controllers.UserControllerImpl{}
 

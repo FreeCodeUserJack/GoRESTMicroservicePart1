@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/repository"
 	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/services"
 	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/utils"
 )
@@ -38,14 +39,22 @@ func (u *UserControllerImpl) GetUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userService := services.UserServiceImpl{}
+	userRepo := repository.UserRepositoryInMemoryImpl{
+		DatabaseUrl: "url",
+		Username: "user",
+		Password: "pass",
+	}
+
+	userService := services.UserServiceImpl{
+		UserRepository: userRepo,
+	}
 
 	foundUser, userServiceErr := userService.GetUserById(uint64(val))
 
 	if userServiceErr != nil {
 		w.WriteHeader(userServiceErr.StatusCode)
 		
-		w.Write([]byte(err.Error()))
+		w.Write([]byte(userServiceErr.String()))
 		return
 	}
 
@@ -58,7 +67,7 @@ func (u *UserControllerImpl) GetUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func UserControllerHi() {
-	fmt.Println("user controller")
-	services.UserServiceHi()
-}
+// func UserControllerHi() {
+// 	fmt.Println("user controller")
+// 	services.UserServiceHi()
+// }

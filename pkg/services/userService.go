@@ -12,16 +12,20 @@ type UserService interface {
 	GetUserById(id uint64) (*domain.User, error)
 }
 
-type UserServiceImpl struct {}
+type UserServiceImpl struct {
+	UserRepository repository.UserRepository
+}
+
+func NewUserServiceImpl(userRepository repository.UserRepository) UserServiceImpl {
+	return UserServiceImpl{
+		UserRepository: userRepository,
+	}
+}
 
 func (u UserServiceImpl) GetUserById(id uint64) (*domain.User, *utils.ApplicationError) {
 	fmt.Println("user service")
 
-	user, err := repository.UserRepositoryImpl{
-		DatabaseUrl: "url",
-		Username: "user",
-		Password: "pass",
-	}.GetUserById(id)
+	user, err := u.UserRepository.GetUserById(id)
 
 	if err != nil {
 		return nil, err
@@ -30,7 +34,7 @@ func (u UserServiceImpl) GetUserById(id uint64) (*domain.User, *utils.Applicatio
 	return user, nil
 }
 
-func UserServiceHi() {
-	fmt.Println("user service")
-	repository.UserRepositoryHi()
-}
+// func UserServiceHi() {
+// 	fmt.Println("user service")
+// 	repository.UserRepositoryHi()
+// }

@@ -17,18 +17,19 @@ var (
 	}
 )
 
+const httpNotFoundCode = "not found"
 
 type UserRepository interface {
-	GetUserById(id uint64) *domain.User
+	GetUserById(id uint64) (*domain.User, *utils.ApplicationError)
 }
 
-type UserRepositoryImpl struct {
+type UserRepositoryInMemoryImpl struct {
 	DatabaseUrl string
 	Username string
 	Password string
 }
 
-func (u UserRepositoryImpl) GetUserById(id uint64) (*domain.User, *utils.ApplicationError) {
+func (u UserRepositoryInMemoryImpl) GetUserById(id uint64) (*domain.User, *utils.ApplicationError) {
 	for _, user := range users {
 		if user.Id == id {
 			return user, nil
@@ -38,11 +39,11 @@ func (u UserRepositoryImpl) GetUserById(id uint64) (*domain.User, *utils.Applica
 	return nil, &utils.ApplicationError{
 		Message: fmt.Sprintf("user with id %d was not found", id),
 		StatusCode: http.StatusNotFound,
-		Code: "not found",
+		Code: httpNotFoundCode,
 	}
 }
 
-func UserRepositoryHi() {
-	fmt.Println("user repository")
-	domain.UserDomainHi()
-}
+// func UserRepositoryHi() {
+// 	fmt.Println("user repository")
+// 	domain.UserDomainHi()
+// }
