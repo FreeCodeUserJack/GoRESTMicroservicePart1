@@ -52,7 +52,7 @@ func AssertApplicationError(t testing.TB, err *ApplicationError, expectedStatusC
 	t.Helper()
 
 	if err == nil || err.StatusCode != expectedStatusCode || err.Code != expectedCode {
-		t.Errorf("expected no error but got %v", err)
+		t.Error("expected error but got no error")
 	}
 }
 

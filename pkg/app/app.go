@@ -10,6 +10,10 @@ import (
 	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/services"
 )
 
+func init() {
+	fmt.Println("init func of app.go")
+}
+
 func StartApp() {
 	fmt.Println("starting app")
 	// controllers.UserControllerHi()

@@ -1,8 +1,6 @@
 package services
 
 import (
-	"fmt"
-
 	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/domain"
 	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/repository"
 	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/utils"
@@ -23,8 +21,6 @@ func NewUserServiceImpl(userRepository repository.UserRepository) UserServiceImp
 }
 
 func (u UserServiceImpl) GetUserById(id uint64) (*domain.User, *utils.ApplicationError) {
-	fmt.Println("user service")
-
 	user, err := u.UserRepository.GetUserById(id)
 
 	if err != nil {
