@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"math/rand"
 	"reflect"
 	"testing"
 
@@ -52,5 +53,23 @@ func AssertApplicationError(t testing.TB, err *ApplicationError, expectedStatusC
 
 	if err == nil || err.StatusCode != expectedStatusCode || err.Code != expectedCode {
 		t.Errorf("expected no error but got %v", err)
+	}
+}
+
+func GenerateIntSlice(size int) []int {
+	res := make([]int, size)
+
+	for i := 0; i < size; i++ {
+		res = append(res, rand.Int())
+	}
+
+	return res
+}
+
+func AssertEqualInstance(t testing.TB, got, want interface{}) {
+	t.Helper()
+
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("got %v, want %v", got, want)
 	}
 }
