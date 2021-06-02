@@ -1,15 +1,13 @@
 package controllers
 
 import (
-	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"strconv"
-	"strings"
 
 	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/services"
 	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/utils"
+	"github.com/gin-gonic/gin"
 )
 
 type UserController interface {
@@ -26,42 +24,31 @@ func NewUserControllerImpl(userService services.UserService) UserControllerImpl 
 	}
 }
 
-func (u UserControllerImpl) GetUserById(w http.ResponseWriter, r *http.Request) {
-	encoder := json.NewEncoder(w)
+func (u UserControllerImpl) GetUserById(c *gin.Context) {
+	
+	c.Writer.Header().Set("content-type", "application/json")
 
-	userId := strings.TrimPrefix(r.URL.Path, "/users/")
-
-	w.Header().Set("content-type", "application/json")
-
-	val, err := strconv.Atoi(userId)
+	userId, err := strconv.ParseInt(c.Param("userId"), 10, 64)
 
 	if err != nil {
 		convErr := &utils.ApplicationError{
-			Message: fmt.Sprintf("failed to convert userid (%s) to an uint64", userId),
+			Message: fmt.Sprintf("failed to convert userid (%d) to an uint64", userId),
 			StatusCode: http.StatusBadRequest,
 			Code: "bad request",
 		}
-		w.WriteHeader(http.StatusBadRequest)
-		encoder.Encode(convErr.String())
+
+		utils.RespondError(c, convErr)
 		return
 	}
 
-	foundUser, userServiceErr := u.UserService.GetUserById(uint64(val))
+	foundUser, userServiceErr := u.UserService.GetUserById(uint64(userId))
 
 	if userServiceErr != nil {
-		w.WriteHeader(userServiceErr.StatusCode)
-		
-		w.Write([]byte(userServiceErr.String()))
+		utils.RespondError(c, userServiceErr)
 		return
 	}
 
-	err = encoder.Encode(foundUser)
-
-	if err != nil {
-		log.Fatalf("error encoding %v", foundUser)
-	}
-	
-	w.WriteHeader(http.StatusOK)
+	utils.Respond(c, http.StatusOK, foundUser)
 }
 
 // func UserControllerHi() {
