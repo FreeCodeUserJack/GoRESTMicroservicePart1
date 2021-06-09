@@ -28,7 +28,7 @@ func CreateRepo(accessToken string, request github.CreateRepoRequest) (*github.C
 	
 	response, err := restclient.Post(urlCreateRepo, request, headers)
 
-	// this error if internet is gone, i.e. github api is not called at all
+	// this error if internet is gone or error marshalling, i.e. github api is not called at all
 	if err != nil {
 		log.Printf("error when trying to create new repo in github: %v", err.Error())
 		return nil, &github.GithubErrorResponse{

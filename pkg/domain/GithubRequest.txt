@@ -1,7 +1,7 @@
 Request
 POST https://api.github.com/user/repos
 
--H "Authorization: token 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
+-H "Authorization: token (github_token env var)
 
 {
   "name":"Hello-World",
