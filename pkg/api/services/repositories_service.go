@@ -10,6 +10,14 @@ import (
 	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/api/utils/errors"
 )
 
+var (
+	RepositoryService repoServiceInterface
+)
+
+func init() {
+	RepositoryService = &repoService{}
+}
+
 type repoServiceInterface interface {
 	CreateRepo(request repositories.CreateRepoRequest) (*repositories.CreateRepoResponse, errors.ApiError)
 }
@@ -40,12 +48,4 @@ func (r *repoService) CreateRepo(input repositories.CreateRepoRequest) (*reposit
 		Owner: response.Owner.Login,
 		Name: response.Name,
 	}, nil
-}
-
-var (
-	RepositoryService repoServiceInterface
-)
-
-func init() {
-	RepositoryService = &repoService{}
 }
