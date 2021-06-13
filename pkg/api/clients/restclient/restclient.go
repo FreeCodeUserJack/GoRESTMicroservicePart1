@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"net/http"
+	"os"
 	"reflect"
 	"strings"
 )
@@ -18,11 +20,30 @@ type Mock struct {
 	Url string
 	HttpMethod string
 	Response *http.Response
+	BodyText string
 	Error error
 }
 
 func (m Mock) GetMockId() string {
 	return fmt.Sprintf("%s_%s", m.HttpMethod, m.Url)
+}
+
+func (m Mock) GetResponse() *http.Response {
+	var res *http.Response
+
+	if m.BodyText == `` {
+		invalidCloser, _ := os.Open("something")
+		res = &http.Response{
+			StatusCode: m.Response.StatusCode,
+			Body: invalidCloser,
+		}
+	} else {
+		res = &http.Response{
+			StatusCode: m.Response.StatusCode,
+			Body: ioutil.NopCloser(strings.NewReader(m.BodyText)),
+		}
+	}
+	return res
 }
 
 func StartMockups() {
