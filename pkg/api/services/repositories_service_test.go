@@ -88,6 +88,7 @@ func TestCreateRepoNoError(t *testing.T) {
 			StatusCode: http.StatusCreated,
 			Body: ioutil.NopCloser(strings.NewReader(`{"name": "RepoName"}`)),
 		},
+		BodyText: `{"id": 123, "name": "RepoName", "owner": {"login": "federico"}}`,
 	})
 
 	request := repositories.CreateRepoRequest{

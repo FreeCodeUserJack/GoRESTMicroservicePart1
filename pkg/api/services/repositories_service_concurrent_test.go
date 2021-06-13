@@ -14,7 +14,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-
 func TestCreateRepoConcurrentInvalidRequest(t *testing.T) {
 	request := repositories.CreateRepoRequest{}
 
@@ -90,6 +89,7 @@ func TestCreateRepoConcurrentNoError(t *testing.T) {
 			StatusCode: http.StatusCreated,
 			Body: ioutil.NopCloser(strings.NewReader(`{"id": 123, "name": "RepoName"}`)),
 		},
+		BodyText: `{"id": 123, "name": "RepoName", "owner": {"login": "federico"}}`,
 	})
 
 	outChan := make(chan repositories.CreateRepositoriesResult)
@@ -176,6 +176,7 @@ func TestCreateReposPartialRequests(t *testing.T) {
 			StatusCode: http.StatusCreated,
 			Body: ioutil.NopCloser(strings.NewReader(`{"id": 123, "name": "RepoName"}`)),
 		},
+		BodyText: `{"id": 123, "name": "RepoName", "owner": {"login": "federico"}}`,
 	})
 
 	result, err := RepositoryService.CreateRepos(requests)
@@ -207,6 +208,7 @@ func TestCreateReposValidRequests(t *testing.T) {
 			StatusCode: http.StatusCreated,
 			Body: ioutil.NopCloser(strings.NewReader(`{"id": 123, "name": "RepoName", "owner": {"login": "federico"}}`)),
 		},
+		BodyText: `{"id": 123, "name": "RepoName", "owner": {"login": "federico"}}`,
 	})
 
 	requests := []repositories.CreateRepoRequest{

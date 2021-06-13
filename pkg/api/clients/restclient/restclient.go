@@ -70,7 +70,7 @@ func Post(url string, body interface{}, headers http.Header) (*http.Response, er
 		if mock == nil {
 			return nil, errors.New("no mockup found for given request")
 		}
-		return mock.Response, mock.Error
+		return mock.GetResponse(), mock.Error
 	}
 
 	var bytes []byte
