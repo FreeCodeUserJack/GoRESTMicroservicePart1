@@ -8,7 +8,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-
 func TestGetMockedContext(t *testing.T) {
 	response := httptest.NewRecorder()
 
