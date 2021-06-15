@@ -7,6 +7,10 @@ type GithubErrorResponse struct {
 	DocumentationUrl string        `json:"documentation_url"`
 }
 
+func (g GithubErrorResponse) Error() string {
+	return g.Message
+}
+
 type GithubError struct {
 	Resource string `json:"resource"`
 	Code     string `json:"code"`
