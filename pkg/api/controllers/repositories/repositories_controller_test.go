@@ -7,11 +7,13 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"reflect"
 	"strings"
 	"testing"
 
 	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/api/clients/restclient"
 	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/api/domain/repositories"
+	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/api/services"
 	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/api/utils/errors"
 	"github.com/FreeCodeUserJack/GoRESTMicroservicePart1/pkg/api/utils/test_utils"
 )
@@ -69,6 +71,8 @@ func TestCreateRepoGithubError(t *testing.T) {
 	request, _ := http.NewRequest(http.MethodPost, "/repositories", strings.NewReader(`{"name": "NewRepo"}`))
 
 	c := test_utils.GetMockedContext(response, request)
+
+	fmt.Println(reflect.TypeOf(services.RepositoryService))
 
 	CreateRepo(c)
 
